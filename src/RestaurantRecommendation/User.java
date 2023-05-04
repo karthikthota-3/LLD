@@ -10,11 +10,61 @@ public class User {
     Cuisine[] priorityCuisines=new Cuisine[3];
     int[] priorityCosts=new int[3];
 
-    /*public User(){
-        userId= String.valueOf(UUID.randomUUID());
-    }*/
+    Map<Cuisine,CuisineTracking> cuisineTrackingMap =new HashMap<>();
+    Map<Integer,CostTracking> costTrackingHashMap=new HashMap<>();
 
-    public PriorityQueue<CuisineTracking> cuisinesPQ=new PriorityQueue<>(new Comparator<CuisineTracking>() {
+    public User(){
+    }
+
+    public void sortCuisineTrackingMap(){
+        Set<Map.Entry<Cuisine,CuisineTracking>> set= cuisineTrackingMap.entrySet();
+        List<Map.Entry<Cuisine,CuisineTracking>> l=new ArrayList<>();
+        for (Map.Entry<Cuisine,CuisineTracking> m:set){
+            l.add(m);
+        }
+        Collections.sort(l, myCuisineComparator);
+        priorityCuisines[0]=l.get(0).getKey();
+        priorityCuisines[1]=l.get(1).getKey();
+        priorityCuisines[2]=l.get(2).getKey();
+    }
+
+
+    Comparator<Map.Entry<Cuisine,CuisineTracking>> myCuisineComparator = new Comparator<Map.Entry<Cuisine,CuisineTracking>>(){
+
+        @Override
+        public int compare(Map.Entry<Cuisine, CuisineTracking> o1, Map.Entry<Cuisine, CuisineTracking> o2) {
+            if(o2.getValue().getNoOfOrders()>o1.getValue().getNoOfOrders())
+                return 1;
+            else
+                return -1;
+        }
+    };
+
+    public void sortCostTrackingMap(){
+        Set<Map.Entry<Integer,CostTracking>> set=costTrackingHashMap.entrySet();
+        List<Map.Entry<Integer,CostTracking>> l=new ArrayList<>();
+        for (Map.Entry<Integer,CostTracking> m:set){
+            l.add(m);
+        }
+        Collections.sort(l, myCostComparator);
+        priorityCosts[0]=l.get(0).getKey();
+        priorityCosts[1]=l.get(1).getKey();
+        priorityCosts[2]=l.get(2).getKey();
+    }
+
+    Comparator<Map.Entry<Integer,CostTracking>> myCostComparator = new Comparator<Map.Entry<Integer,CostTracking>>(){
+
+        @Override
+        public int compare(Map.Entry<Integer,CostTracking> o1, Map.Entry<Integer,CostTracking> o2) {
+            if(o2.getValue().getNoOfOrders()>o1.getValue().getNoOfOrders())
+                return 1;
+            else
+                return -1;
+        }
+    };
+
+
+ /*   public PriorityQueue<CuisineTracking> cuisinesPQ=new PriorityQueue<>(new Comparator<CuisineTracking>() {
         @Override
         public int compare(CuisineTracking o1, CuisineTracking o2) {
             if(o2.getNoOfOrders()>o1.getNoOfOrders())
@@ -82,6 +132,6 @@ public class User {
             costBracketPQ.add(p1);
         }
         return true;
-    }
+    }*/
 
 }
